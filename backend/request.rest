@@ -1,0 +1,7 @@
+POST http://localhost:3000/authenticate
+content-type: application/json
+
+{
+    "username": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
