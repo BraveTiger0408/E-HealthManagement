@@ -13,7 +13,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faUserDoctor, faHospital, faHeartCircleCheck, faLaptopMedical } from '@fortawesome/free-solid-svg-icons'
 
-const products = [
+const users = [
   { name: 'Patient Login', description: 'Book appointment & get treatment', href: "/patientlogin", icon: faUser },
   { name: 'Doctor Login', description: 'Speak directly to your customers', href: '#', icon: faUserDoctor },
   { name: 'Hospital Login', description: 'Your customers’ data will be safe and secure', href: '#', icon: faHospital },
@@ -68,7 +68,7 @@ export default function Header() {
             >
               <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                 <div className="p-4">
-                  {products.map((item) => (
+                  {users.map((item) => (
                     <div
                       key={item.name}
                       className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
@@ -122,13 +122,9 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">E-Health Management System</span>
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt=""
-              />
+            <a href="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
+                <span className="sr-only">E-Health Management System</span>
+                <img className="h-8 w-auto float-left" src="https://www.pngkit.com/png/full/113-1133314_logo-for-hospital-management-system-in-png.png" alt="E-Health Management System" />E-Health Management System
             </a>
             <button
               type="button"
@@ -153,7 +149,7 @@ export default function Header() {
                         />
                       </Disclosure.Button>
                       <Disclosure.Panel className="mt-2 space-y-2">
-                        {[...products, ...callsToAction].map((item) => (
+                        {users.map((item) => (
                           <Disclosure.Button
                             key={item.name}
                             as="a"
@@ -167,6 +163,8 @@ export default function Header() {
                     </>
                   )}
                 </Disclosure>
+                </div>
+                <div className="py-6">
                 <a
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
@@ -184,9 +182,12 @@ export default function Header() {
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Team
+                </a><a
+                  href="#"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                >
+                  Contacts
                 </a>
-              </div>
-              <div className="py-6">
                 <a target='_blank'
                   href="https://github.com/MrSagarBiswas/E-Health-Management-System"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
