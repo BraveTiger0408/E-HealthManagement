@@ -1,14 +1,9 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import Header from './Header'
 
 function Home() {
-    const navigate = useNavigate();
     return <>
-        <header className="App-header">
-            Hospital Management System
-        </header>
-        
-        <button onClick={() => navigate("/patientlogin")}>Patient Login</button>
+        <Header />
     </>
 }
 
