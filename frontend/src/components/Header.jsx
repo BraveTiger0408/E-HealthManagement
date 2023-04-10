@@ -2,12 +2,7 @@ import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import {
-    ArrowPathIcon,
     Bars3Icon,
-    ChartPieIcon,
-    CursorArrowRaysIcon,
-    FingerPrintIcon,
-    SquaresPlusIcon,
     XMarkIcon,
   } from '@heroicons/react/24/outline'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,8 +10,8 @@ import { faUser, faUserDoctor, faHospital, faHeartCircleCheck, faLaptopMedical }
 
 const users = [
   { name: 'Patient Login', description: 'Book appointment & get treatment', href: "/patientlogin", icon: faUser },
-  { name: 'Doctor Login', description: 'Speak directly to your customers', href: '#', icon: faUserDoctor },
-  { name: 'Hospital Login', description: 'Your customers’ data will be safe and secure', href: '#', icon: faHospital },
+  { name: 'Doctor Login', description: 'Check up patients from your home', href: '#', icon: faUserDoctor },
+  { name: 'Hospital Login', description: 'Upload patient\'s reports & bills', href: '#', icon: faHospital },
   { name: 'Insurance Company Login', description: 'Always ready to save your customers life', href: '#', icon: faHeartCircleCheck }
 ]
 const callsToAction = [
@@ -37,7 +32,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
             <span className="sr-only">E-Health Management System</span>
-            <img className="h-8 w-auto float-left" src="https://www.pngkit.com/png/full/113-1133314_logo-for-hospital-management-system-in-png.png" alt="E-Health Management System" />E-Health Management System
+            <img className="h-8 w-auto float-left" src="logo.png" alt="E-Health Management System" />E-Health Management System
           </a>
         </div>
         <div className="flex lg:hidden">

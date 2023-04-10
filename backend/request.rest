@@ -1,7 +1,16 @@
-POST http://localhost:3000/authenticate
+POST http://localhost:5000/profile
 content-type: application/json
 
 {
-    "username": "sample",
-    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
-}
+      "email": "biswassagar927@gmail.com",
+      "name": { "FName": "FName", "LName": "LName" },
+      "mobile": 89,
+      "gender": "Male",
+      "DOB": "2002/09/09",
+      "address": {
+          "street": "street",
+          "city": "city",
+          "state": "state",
+          "pin": 73673
+      }
+  }
