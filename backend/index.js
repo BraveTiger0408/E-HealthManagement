@@ -29,7 +29,7 @@ const profileSchema = new mongoose.Schema({
 })
 
 const userSchema = new mongoose.Schema({
-    _id: //Gmail field
+    email: //Gmail field
     {
         type: String,
         require: true
@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    sessionKey: String,
     profile: profileSchema
 })
 
@@ -47,9 +48,9 @@ const users = new mongoose.model('user', userSchema);
 
 app.post("/register", async (req, res) => {
     const { email, password } = req.body;
-    users.findOne({ _id: email }).then((data) => {
+    users.findOne({ email: email }).then((data) => {
         if (!data) {
-            users.create({ _id: email, password: password }).then(() => {
+            users.create({ email: email, password: password }).then(() => {
                 return res.json({ status: 'done' })
             })
         } else {
@@ -58,9 +59,8 @@ app.post("/register", async (req, res) => {
     }).catch(err => console.log(err));
 });
 
-app.post("/profile", async (req, res) => {
-    const { email, name, mobile, gender, DOB, address } = req.body;
-    console.log(email);
+app.post("/profile", (req, res) => {
+    const { email, sessionKey, name, mobile, gender, DOB, address } = req.body;
     const profile = {
         name: name,
         mobile: mobile,
@@ -68,7 +68,7 @@ app.post("/profile", async (req, res) => {
         DOB: DOB,
         address: address
     }
-    users.findOneAndUpdate({ _id: email }, { profile: profile }, { new: true }).then(doc => {
+    users.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
         console.log(doc);
         return res.json(doc)
     }).catch(err => console.log(err));
@@ -76,13 +76,29 @@ app.post("/profile", async (req, res) => {
 })
 
 
-app.get("/get", (req, res) => {
-    // const { username } = req.body;
-    return res.json({ username: "username", secret: "sha256..." });
+app.post("/session", (req, res) => {
+    const { email, sessionKey } = req.body;
+    users.findOne({ email: email }).then(data => {
+        if (data.sessionKey == sessionKey) {
+            return res.json({ data: data, status: "authenticated" })
+        } else return res.json({ status: "unauthenticated" });
+    })
 })
 
-const port = process.env.PORT || "5000";
+app.post("/patient/login", (req, res) => {
+    const { email, password } = req.body;
+    users.findOne({ email: email }).then(data => {
+        if (data) {
+            if (data.password == password) {
+                return res.json({ data: data, status: "authenticated" })
+            } else return res.json({ status: "wrongPassword" });
+        } else return res.json({ status: "emailNotRegistered" });
+    })
+})
 
+
+
+const port = process.env.PORT || "5000";
 app.listen(port, () => {
     console.log("Server is Started on PORT: " + port)
 })
