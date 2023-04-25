@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './components/Home'
 import PatientLogin from './components/patient/Login'
 import PatientRegister from './components/patient/Register'
-import PatientDashboard from './components/patient/Dashboard'
+import PatientDashboard from './components/patient/dashboard/Dashboard'
 
 function App() {
   return (

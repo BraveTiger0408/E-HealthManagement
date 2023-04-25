@@ -1,15 +1,17 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import Header from '../Header'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { useState } from 'react';
 
 export default function Login() {
+  localStorage.removeItem("currentPage");
   const navigate = useNavigate();
   if (sessionStorage.getItem("sessionKey")) {
     axios.post("http://localhost:5000/session", { "email": sessionStorage.getItem("email"), "sessionKey": sessionStorage.getItem("sessionKey") }).then(res => {
       if (res.data.status === "authenticated") {
         navigate("/patientdashboard", { state: res.data.data });
+        localStorage.setItem("currentPage", "Basic");
       }
     })
   }
@@ -19,7 +21,8 @@ export default function Login() {
     axios.post("http://localhost:5000/patient/login", { "email": event.target.email.value, "password": event.target.password.value }).then(res => {
       if (res.data.status === "authenticated") {
         navigate("/patientdashboard", { state: res.data.data });
-      } else if(res.data.status === "wrongPassword") {
+        localStorage.setItem("currentPage", "Basic");
+      } else if (res.data.status === "wrongPassword") {
         setWrong("wrongPassword");
       } else {
         setWrong("emailNotRegistered");
@@ -44,15 +47,15 @@ export default function Login() {
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Don't have an account?{' '}
-              <a href="/patientregister" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <NavLink to="/patientregister" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Sign up
-              </a>
+              </NavLink>
             </p>
           </div>
           <form className="mt-8 space-y-6" onSubmit={handleLogin} method="POST">
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-            {wrong==="emailNotRegistered"?<p className='text-red-500'>Email is not registered</p>:""}
+              {wrong === "emailNotRegistered" ? <p className='text-red-500'>Email is not registered</p> : ""}
               <div>
                 <label htmlFor="email-address" className="sr-only">
                   Email address
@@ -81,7 +84,7 @@ export default function Login() {
                   placeholder="Password"
                 />
               </div>
-              {wrong==="wrongPassword"?<p className='text-red-500'>Wrong Password</p>:""}
+              {wrong === "wrongPassword" ? <p className='text-red-500'>Wrong Password</p> : ""}
             </div>
 
             <div className="flex items-center justify-between">

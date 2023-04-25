@@ -2,21 +2,22 @@ import { Fragment, useState } from 'react'
 import { Dialog, Disclosure, Popover, Transition } from '@headlessui/react'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
 import {
-    Bars3Icon,
-    XMarkIcon,
-  } from '@heroicons/react/24/outline'
+  Bars3Icon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faUserDoctor, faHospital, faHeartCircleCheck, faLaptopMedical } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUserDoctor, faHospital, faHeartCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { NavLink } from 'react-router-dom';
 
 const users = [
-  { name: 'Patient Login', description: 'Book appointment & get treatment', href: "/patientlogin", icon: faUser },
-  { name: 'Doctor Login', description: 'Check up patients from your home', href: '#', icon: faUserDoctor },
-  { name: 'Hospital Login', description: 'Upload patient\'s reports & bills', href: '#', icon: faHospital },
-  { name: 'Insurance Company Login', description: 'Always ready to save your customers life', href: '#', icon: faHeartCircleCheck }
+  { name: 'Patient Login', description: 'Book appointment & get treatment', to: "/patientlogin", icon: faUser },
+  { name: 'Doctor Login', description: 'Check up patients from your home', to: '/', icon: faUserDoctor },
+  { name: 'Hospital Login', description: 'Upload patient\'s reports & bills', to: '/', icon: faHospital },
+  { name: 'Insurance Company Login', description: 'Always ready to save your customers life', to: '/', icon: faHeartCircleCheck }
 ]
 const callsToAction = [
-  { name: 'Watch demo', href: '#', icon: PlayCircleIcon },
-  { name: 'Contact', href: '#', icon: PhoneIcon },
+  { name: 'Watch demo', to: '/', icon: PlayCircleIcon },
+  { name: 'Contact', to: '/', icon: PhoneIcon },
 ]
 
 function classNames(...classes) {
@@ -30,10 +31,10 @@ export default function Header() {
     <header className="bg-white">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
+          <NavLink to="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
             <span className="sr-only">E-Health Management System</span>
             <img className="h-8 w-auto float-left" src="logo.png" alt="E-Health Management System" />E-Health Management System
-          </a>
+          </NavLink>
         </div>
         <div className="flex lg:hidden">
           <button
@@ -72,10 +73,10 @@ export default function Header() {
                         <FontAwesomeIcon className="fa-2x" icon={item.icon} />
                       </div>
                       <div className="flex-auto">
-                        <a href={item.href} className="block font-semibold text-gray-900">
+                        <NavLink to={item.to} className="block font-semibold text-gray-900">
                           {item.name}
                           <span className="absolute inset-0" />
-                        </a>
+                        </NavLink>
                         <p className="mt-1 text-gray-600">{item.description}</p>
                       </div>
                     </div>
@@ -83,32 +84,32 @@ export default function Header() {
                 </div>
                 <div className="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
                   {callsToAction.map((item) => (
-                    <a
+                    <NavLink
                       key={item.name}
-                      href={item.href}
+                      to={item.to}
                       className="flex items-center justify-center gap-x-2.5 p-3 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100"
                     >
                       <item.icon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
                       {item.name}
-                    </a>
+                    </NavLink>
                   ))}
                 </div>
               </Popover.Panel>
             </Transition>
           </Popover>
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <NavLink to="/" className="text-sm font-semibold leading-6 text-gray-900">
             Features
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          </NavLink>
+          <NavLink to="/" className="text-sm font-semibold leading-6 text-gray-900">
             About
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          </NavLink>
+          <NavLink to="/" className="text-sm font-semibold leading-6 text-gray-900">
             Team
-          </a>
+          </NavLink>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a target='_blank' href="https://github.com/MrSagarBiswas/E-Health-Management-System" className="text-sm font-semibold leading-6 text-gray-900">
+          <a target='_blank' rel="noreferrer" href="https://github.com/MrSagarBiswas/E-Health-Management-System" className="text-sm font-semibold leading-6 text-gray-900">
             GitHub <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -117,10 +118,10 @@ export default function Header() {
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
-            <a href="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
-                <span className="sr-only">E-Health Management System</span>
-                <img className="h-8 w-auto float-left" src="https://www.pngkit.com/png/full/113-1133314_logo-for-hospital-management-system-in-png.png" alt="E-Health Management System" />E-Health Management System
-            </a>
+            <NavLink to="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
+              <span className="sr-only">E-Health Management System</span>
+              <img className="h-8 w-auto float-left" src="https://www.pngkit.com/png/full/113-1133314_logo-for-hospital-management-system-in-png.png" alt="E-Health Management System" />E-Health Management System
+            </NavLink>
             <button
               type="button"
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -145,50 +146,49 @@ export default function Header() {
                       </Disclosure.Button>
                       <Disclosure.Panel className="mt-2 space-y-2">
                         {users.map((item) => (
-                          <Disclosure.Button
+                          <NavLink
                             key={item.name}
-                            as="a"
-                            href={item.href}
+                            to={item.to}
                             className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                           >
                             {item.name}
-                          </Disclosure.Button>
+                          </NavLink>
                         ))}
                       </Disclosure.Panel>
                     </>
                   )}
                 </Disclosure>
-                </div>
-                <div className="py-6">
-                <a
-                  href="#"
+              </div>
+              <div className="py-6">
+                <NavLink to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Features
-                </a>
-                <a
-                  href="#"
+                </NavLink>
+                <NavLink
+                  to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   About
-                </a>
-                <a
-                  href="#"
+                </NavLink>
+                <NavLink
+                  to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Team
-                </a><a
-                  href="#"
+                </NavLink>
+                <NavLink
+                  to="/"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Contacts
-                </a>
-                <a target='_blank'
-                  href="https://github.com/MrSagarBiswas/E-Health-Management-System"
+                </NavLink>
+                <NavLink target='_blank'
+                  to="https://github.com/MrSagarBiswas/E-Health-Management-System"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   GitHub
-                </a>
+                </NavLink>
               </div>
             </div>
           </div>

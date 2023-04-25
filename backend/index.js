@@ -1,12 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require('mongoose')
+require("dotenv").config()
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: true }));
 
-mongoose.connect("mongodb+srv://MrSagarBiswas:sagar123@cluster0.lhx35.mongodb.net/EHMS", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
 const profileSchema = new mongoose.Schema({
     name: new mongoose.Schema({
@@ -25,10 +26,22 @@ const profileSchema = new mongoose.Schema({
         state: String,
         pin: Number
     })
-
 })
 
-const userSchema = new mongoose.Schema({
+const healthReportSchema = new mongoose.Schema({
+    basic: [{
+        name: String,
+        value: String,
+        date: Date
+    }],
+    all: {
+        name: [String],
+        date: [Date],
+        data: [Buffer]
+    }
+})
+
+const patientSchema = new mongoose.Schema({
     email: //Gmail field
     {
         type: String,
@@ -40,17 +53,17 @@ const userSchema = new mongoose.Schema({
         require: true
     },
     sessionKey: String,
-    profile: profileSchema
+    profile: profileSchema,
+    healthReport: healthReportSchema
 })
 
-const users = new mongoose.model('user', userSchema);
-
+const patients = new mongoose.model('patient', patientSchema);
 
 app.post("/register", async (req, res) => {
     const { email, password } = req.body;
-    users.findOne({ email: email }).then((data) => {
+    await patients.findOne({ email: email }).then((data) => {
         if (!data) {
-            users.create({ email: email, password: password }).then(() => {
+            patients.create({ email: email, password: password }).then(() => {
                 return res.json({ status: 'done' })
             })
         } else {
@@ -59,7 +72,7 @@ app.post("/register", async (req, res) => {
     }).catch(err => console.log(err));
 });
 
-app.post("/profile", (req, res) => {
+app.post("/profile", async (req, res) => {
     const { email, sessionKey, name, mobile, gender, DOB, address } = req.body;
     const profile = {
         name: name,
@@ -68,26 +81,25 @@ app.post("/profile", (req, res) => {
         DOB: DOB,
         address: address
     }
-    users.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
+    await patients.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
         console.log(doc);
         return res.json(doc)
     }).catch(err => console.log(err));
 
 })
 
-
-app.post("/session", (req, res) => {
+app.post("/session", async (req, res) => {
     const { email, sessionKey } = req.body;
-    users.findOne({ email: email }).then(data => {
+    await patients.findOne({ email: email }).then(data => {
         if (data.sessionKey == sessionKey) {
             return res.json({ data: data, status: "authenticated" })
         } else return res.json({ status: "unauthenticated" });
     })
 })
 
-app.post("/patient/login", (req, res) => {
+app.post("/patient/login", async (req, res) => {
     const { email, password } = req.body;
-    users.findOne({ email: email }).then(data => {
+    await patients.findOne({ email: email }).then(data => {
         if (data) {
             if (data.password == password) {
                 return res.json({ data: data, status: "authenticated" })
