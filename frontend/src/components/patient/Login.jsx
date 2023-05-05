@@ -8,9 +8,9 @@ export default function Login() {
   localStorage.removeItem("currentPage");
   const navigate = useNavigate();
   if (sessionStorage.getItem("sessionKey")) {
-    axios.post("http://localhost:5000/session", { "email": sessionStorage.getItem("email"), "sessionKey": sessionStorage.getItem("sessionKey") }).then(res => {
+    axios.post("http://localhost:5000/patient/session", { "email": sessionStorage.getItem("email"), "sessionKey": sessionStorage.getItem("sessionKey") }).then(res => {
       if (res.data.status === "authenticated") {
-        navigate("/patientdashboard", { state: res.data.data });
+        navigate("/patient/dashboard", { state: res.data.data });
         localStorage.setItem("currentPage", "Basic");
       }
     })
@@ -20,7 +20,7 @@ export default function Login() {
   function handleLogin(event) {
     axios.post("http://localhost:5000/patient/login", { "email": event.target.email.value, "password": event.target.password.value }).then(res => {
       if (res.data.status === "authenticated") {
-        navigate("/patientdashboard", { state: res.data.data });
+        navigate("/patient/dashboard", { state: res.data.data });
         localStorage.setItem("currentPage", "Basic");
       } else if (res.data.status === "wrongPassword") {
         setWrong("wrongPassword");
@@ -39,15 +39,15 @@ export default function Login() {
           <div>
             <img
               className="mx-auto h-12 w-auto"
-              src="logo.png"
-              alt="E-Health Management System"
+              src="/logo.png"
+              alt=""
             />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
               Sign in as Patient
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Don't have an account?{' '}
-              <NavLink to="/patientregister" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <NavLink to="/patient/register" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Sign up
               </NavLink>
             </p>

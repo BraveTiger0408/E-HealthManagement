@@ -10,7 +10,7 @@ import { faUser, faUserDoctor, faHospital, faHeartCircleCheck } from '@fortaweso
 import { NavLink } from 'react-router-dom';
 
 const users = [
-  { name: 'Patient Login', description: 'Book appointment & get treatment', to: "/patientlogin", icon: faUser },
+  { name: 'Patient Login', description: 'Book appointment & get treatment', to: "/patient/login", icon: faUser },
   { name: 'Doctor Login', description: 'Check up patients from your home', to: '/', icon: faUserDoctor },
   { name: 'Hospital Login', description: 'Upload patient\'s reports & bills', to: '/', icon: faHospital },
   { name: 'Insurance Company Login', description: 'Always ready to save your customers life', to: '/', icon: faHeartCircleCheck }
@@ -33,7 +33,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <NavLink to="/" className="-m-1.5 p-1.5 text-sm font-semibold leading-6 text-gray-900">
             <span className="sr-only">E-Health Management System</span>
-            <img className="h-8 w-auto float-left" src="logo.png" alt="E-Health Management System" />E-Health Management System
+            <img className="h-8 w-auto float-left" src="/logo.png" alt="" />E-Health Management System
           </NavLink>
         </div>
         <div className="flex lg:hidden">
@@ -98,9 +98,9 @@ export default function Header() {
             </Transition>
           </Popover>
 
-          <NavLink to="/" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="#features" className="text-sm font-semibold leading-6 text-gray-900">
             Features
-          </NavLink>
+          </a>
           <NavLink to="/" className="text-sm font-semibold leading-6 text-gray-900">
             About
           </NavLink>

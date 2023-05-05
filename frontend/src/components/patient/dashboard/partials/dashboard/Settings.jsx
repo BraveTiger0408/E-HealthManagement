@@ -20,10 +20,10 @@ export default function Settings({ data, setPage }) {
             }
         }
         event.preventDefault();
-        axios.post('http://localhost:5000/profile', Doc).then(res => {
+        axios.post('http://localhost:5000/patient/profile', Doc).then(res => {
             localStorage.setItem("currentPage", "Basic")
             setPage();
-            navigate("/patientdashboard", { state: res.data });
+            navigate("/patient/dashboard", { state: res.data });
         })
     }
     return <>
@@ -33,11 +33,11 @@ export default function Settings({ data, setPage }) {
                     <div>
                         <img
                             className="mx-auto h-12 w-auto"
-                            src="logo.png"
-                            alt="E-Health Management System"
+                            src="/logo.png"
+                            alt=""
                         />
                         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-                            Sign up as Patient
+                            Settings
                         </h2>
                     </div>
                     <form className="mt-8 space-y-6" onSubmit={handleSave} method="POST">

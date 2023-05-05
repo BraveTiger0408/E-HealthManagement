@@ -9,6 +9,9 @@ app.use(cors({ origin: true }));
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 
+
+// Patient Operations
+
 const profileSchema = new mongoose.Schema({
     name: new mongoose.Schema({
         FName: String,
@@ -42,7 +45,7 @@ const healthReportSchema = new mongoose.Schema({
 })
 
 const patientSchema = new mongoose.Schema({
-    email: //Gmail field
+    email:
     {
         type: String,
         require: true
@@ -59,9 +62,9 @@ const patientSchema = new mongoose.Schema({
 
 const patients = new mongoose.model('patient', patientSchema);
 
-app.post("/register", async (req, res) => {
+app.post("/patient/register", async (req, res) => {
     const { email, password } = req.body;
-    await patients.findOne({ email: email }).then((data) => {
+    patients.findOne({ email: email }).then((data) => {
         if (!data) {
             patients.create({ email: email, password: password }).then(() => {
                 return res.json({ status: 'done' })
@@ -72,7 +75,7 @@ app.post("/register", async (req, res) => {
     }).catch(err => console.log(err));
 });
 
-app.post("/profile", async (req, res) => {
+app.post("/patient/profile", async (req, res) => {
     const { email, sessionKey, name, mobile, gender, DOB, address } = req.body;
     const profile = {
         name: name,
@@ -85,10 +88,9 @@ app.post("/profile", async (req, res) => {
         console.log(doc);
         return res.json(doc)
     }).catch(err => console.log(err));
-
 })
 
-app.post("/session", async (req, res) => {
+app.post("/patient/session", async (req, res) => {
     const { email, sessionKey } = req.body;
     await patients.findOne({ email: email }).then(data => {
         if (data.sessionKey == sessionKey) {
@@ -107,7 +109,6 @@ app.post("/patient/login", async (req, res) => {
         } else return res.json({ status: "emailNotRegistered" });
     })
 })
-
 
 
 const port = process.env.PORT || "5000";

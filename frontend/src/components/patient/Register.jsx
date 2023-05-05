@@ -10,7 +10,7 @@ function FirstPage(props) {
   const [exist, setExist] = useState(0);
   function handleNext(event) {
     if (event.target.password.value === event.target.confirmPassword.value) {
-      axios.post('http://localhost:5000/register', { email: event.target.email.value, password: event.target.password.value }).then(res => {
+      axios.post('http://localhost:5000/patient/register', { email: event.target.email.value, password: event.target.password.value }).then(res => {
         console.log(res.data.status);
         if (res.data.status === 'done') {
           props.setNext(1);
@@ -28,15 +28,15 @@ function FirstPage(props) {
         <div>
           <img
             className="mx-auto h-12 w-auto"
-            src="logo.png"
-            alt="E-Health Management System"
+            src="/logo.png"
+            alt=""
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Sign up as Patient
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <NavLink to="/patientlogin" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <NavLink to="/patient/login" className="font-medium text-indigo-600 hover:text-indigo-500">
               Sign in
             </NavLink>
           </p>
@@ -142,8 +142,8 @@ function SecondPage(props) {
       }
   }
   event.preventDefault();
-    axios.post('http://localhost:5000/profile', data).then(res => {
-      navigate("/patientdashboard", {state: res.data});
+    axios.post('http://localhost:5000/patient/profile', data).then(res => {
+      navigate("/patient/dashboard", {state: res.data});
       localStorage.setItem("currentPage", "Basic");
     })
   }
@@ -153,8 +153,8 @@ function SecondPage(props) {
         <div>
           <img
             className="mx-auto h-12 w-auto"
-            src="logo.png"
-            alt="E-Health Management System"
+            src="/logo.png"
+            alt=""
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
             Sign up as Patient
