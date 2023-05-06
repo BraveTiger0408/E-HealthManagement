@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Settings({ data, setPage }) {
     const navigate = useNavigate();
     function handleSave(event) {
-        const {FName, LName, mobile, gender, DOB, street, city, state, pinCode} = event.target;
+        const { FName, LName, mobile, gender, DOB, street, city, state, pinCode } = event.target;
         const Doc = {
             "email": data.email,
             "sessionKey": data.sessionKey,
@@ -20,10 +20,10 @@ export default function Settings({ data, setPage }) {
             }
         }
         event.preventDefault();
-        axios.post(process.env.REACT_APP_API + "/patient/profile", Doc).then(res => {
+        axios.post(process.env.REACT_APP_API + "/doctor/profile", Doc).then(res => {
             localStorage.setItem("currentPage", "Basic")
             setPage();
-            navigate("/patient/dashboard", { state: res.data });
+            navigate("/doctor/dashboard", { state: res.data });
         })
     }
     return <>
@@ -73,6 +73,51 @@ export default function Settings({ data, setPage }) {
                                             id="last-name"
                                             placeholder='Last Name'
                                             autoComplete="family-name"
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="sm:col-span-3">
+                                    <label htmlFor="reg-no" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Registration No.
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="registration"
+                                            id="reg"
+                                            placeholder='Registration No'
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="sm:col-span-3">
+                                    <label htmlFor="degree" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Degree
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="degree"
+                                            id="degree"
+                                            placeholder='e.g. MBBS, MD in Cardiology'
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="sm:col-span-2">
+                                    <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Experience in years
+                                    </label>
+                                    <div className="mt-2">
+                                        <input
+                                            type="text"
+                                            name="experience"
+                                            id="experience"
+                                            placeholder='e.g. 5'
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>

@@ -8,9 +8,9 @@ export default function Login() {
   localStorage.removeItem("currentPage");
   const navigate = useNavigate();
   if (sessionStorage.getItem("sessionKey")) {
-    axios.post(process.env.REACT_APP_API + "/patient/session", { "email": sessionStorage.getItem("email"), "sessionKey": sessionStorage.getItem("sessionKey") }).then(res => {
+    axios.post(process.env.REACT_APP_API + "/doctor/session", { "email": sessionStorage.getItem("email"), "sessionKey": sessionStorage.getItem("sessionKey") }).then(res => {
       if (res.data.status === "authenticated") {
-        navigate("/patient/dashboard", { state: res.data.data });
+        navigate("/doctor/dashboard", { state: res.data.data });
         localStorage.setItem("currentPage", "Basic");
       }
     })
@@ -18,9 +18,9 @@ export default function Login() {
 
   const [wrong, setWrong] = useState("");
   function handleLogin(event) {
-    axios.post(process.env.REACT_APP_API + "/patient/login", { "email": event.target.email.value, "password": event.target.password.value }).then(res => {
+    axios.post(process.env.API + "/doctor/login", { "email": event.target.email.value, "password": event.target.password.value }).then(res => {
       if (res.data.status === "authenticated") {
-        navigate("/patient/dashboard", { state: res.data.data });
+        navigate("/doctor/dashboard", { state: res.data.data });
         localStorage.setItem("currentPage", "Basic");
       } else if (res.data.status === "wrongPassword") {
         setWrong("wrongPassword");
@@ -43,11 +43,11 @@ export default function Login() {
               alt=""
             />
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Sign in as Patient
+              Sign in as Doctor
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
               Don't have an account?{' '}
-              <NavLink to="/patient/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <NavLink to="/doctor/register" className="font-medium text-indigo-600 hover:text-indigo-500">
                 Sign up
               </NavLink>
             </p>

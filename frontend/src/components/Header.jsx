@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom';
 
 const users = [
   { name: 'Patient Login', description: 'Book appointment & get treatment', to: "/patient/login", icon: faUser },
-  { name: 'Doctor Login', description: 'Check up patients from your home', to: '/', icon: faUserDoctor },
+  { name: 'Doctor Login', description: 'Check up patients from your home', to: '/doctor/login', icon: faUserDoctor },
   { name: 'Hospital Login', description: 'Upload patient\'s reports & bills', to: '/', icon: faHospital },
   { name: 'Insurance Company Login', description: 'Always ready to save your customers life', to: '/', icon: faHeartCircleCheck }
 ]

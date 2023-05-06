@@ -3,14 +3,14 @@ import Header from '../Header'
 import { useState } from 'react'
 import axios from 'axios';
 import { useNavigate, NavLink } from 'react-router-dom';
-import {generateString} from '../Functions'
+import { generateString } from '../Functions'
 
 function FirstPage(props) {
   const [match, setMatch] = useState(1);
   const [exist, setExist] = useState(0);
   function handleNext(event) {
     if (event.target.password.value === event.target.confirmPassword.value) {
-      axios.post(process.env.REACT_APP_API + "/patient/register", { email: event.target.email.value, password: event.target.password.value }).then(res => {
+      axios.post(process.env.REACT_APP_API + "/doctor/register", { email: event.target.email.value, password: event.target.password.value }).then(res => {
         console.log(res.data.status);
         if (res.data.status === 'done') {
           props.setNext(1);
@@ -32,11 +32,11 @@ function FirstPage(props) {
             alt=""
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Sign up as Patient
+            Sign up as Doctor
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Already have an account?{' '}
-            <NavLink to="/patient/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <NavLink to="/doctor/login" className="font-medium text-indigo-600 hover:text-indigo-500">
               Sign in
             </NavLink>
           </p>
@@ -135,17 +135,20 @@ function SecondPage(props) {
       "gender": gender.value,
       "DOB": DOB.value,
       "address": {
-          "street": street.value,
-          "city": city.value,
-          "state": state.value,
-          "pin": pinCode.value
+        "street": street.value,
+        "city": city.value,
+        "state": state.value,
+        "pin": pinCode.value
       }
-  }
-  event.preventDefault();
-    axios.post(process.env.REACT_APP_API + "/patient/profile", data).then(res => {
-      navigate("/patient/dashboard", {state: res.data});
+    }
+
+    console.log(data)
+    event.preventDefault();
+    axios.post(process.env.REACT_APP_API + "/doctor/profile", data).then(res => {
+      console.log("save a Clicked")
+      navigate("/doctor/dashboard", { state: res.data });
       localStorage.setItem("currentPage", "Basic");
-    })
+    }).catch(err => console.log(err));
   }
   return <>
     <div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -157,7 +160,7 @@ function SecondPage(props) {
             alt=""
           />
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Sign up as Patient
+            Sign up as Doctor
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSave} method="POST">
@@ -193,6 +196,51 @@ function SecondPage(props) {
                     id="last-name"
                     placeholder='Last Name'
                     autoComplete="family-name"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-3">
+                <label htmlFor="reg-no" className="block text-sm font-medium leading-6 text-gray-900">
+                  Registration No.
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="registration"
+                    id="reg"
+                    placeholder='Registration No'
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-3">
+                <label htmlFor="degree" className="block text-sm font-medium leading-6 text-gray-900">
+                  Degree
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="degree"
+                    id="degree"
+                    placeholder='e.g. MBBS, MD in Cardiology'
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">
+                  Experience in years
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="experience"
+                    id="experience"
+                    placeholder='e.g. 5'
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
