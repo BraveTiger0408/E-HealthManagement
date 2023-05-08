@@ -18,7 +18,7 @@ export default function Login() {
 
   const [wrong, setWrong] = useState("");
   function handleLogin(event) {
-    axios.post(process.env.API + "/doctor/login", { "email": event.target.email.value, "password": event.target.password.value }).then(res => {
+    axios.post(process.env.REACT_APP_API + "/doctor/login", { "email": event.target.email.value, "password": event.target.password.value }).then(res => {
       if (res.data.status === "authenticated") {
         navigate("/doctor/dashboard", { state: res.data.data });
         localStorage.setItem("currentPage", "Basic");

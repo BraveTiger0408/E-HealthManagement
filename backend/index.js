@@ -93,7 +93,7 @@ app.post("/patient/profile", async (req, res) => {
 app.post("/patient/session", async (req, res) => {
     const { email, sessionKey } = req.body;
     await patients.findOne({ email: email }).then(data => {
-        if (data.sessionKey == sessionKey) {
+        if (data && data.sessionKey == sessionKey) {
             return res.json({ data: data, status: "authenticated" })
         } else return res.json({ status: "unauthenticated" });
     })
@@ -110,6 +110,13 @@ app.post("/patient/login", async (req, res) => {
     })
 })
 
+app.get("/patient/doctors", async (req, res) => {
+    await doctors.find({}, {"password":0, "sessionKey":0}).then(data => {
+        if(data)
+        return res.json(data);
+    })
+})
+
 
 // Doctor Operations
 
@@ -118,6 +125,9 @@ const doctorProfileSchema = new mongoose.Schema({
         FName: String,
         LName: String,
     }),
+    registration: String,
+    degree: String,
+    fees: Number,
     mobile: Number,
     gender: {
         type: String,
@@ -163,16 +173,18 @@ app.post("/doctor/register", async (req, res) => {
 });
 
 app.post("/doctor/profile", async (req, res) => {
-    const { email, sessionKey, name, mobile, gender, DOB, address } = req.body;
+    const { email, sessionKey, name, registration, degree, fees, mobile, gender, DOB, address } = req.body;
     const profile = {
         name: name,
+        registration: registration,
+        degree: degree,
+        fees: fees,
         mobile: mobile,
         gender: gender,
         DOB: DOB,
         address: address
     }
     await doctors.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
-        console.log(doc);
         return res.json(doc)
     }).catch(err => console.log(err));
 })
@@ -180,7 +192,7 @@ app.post("/doctor/profile", async (req, res) => {
 app.post("/doctor/session", async (req, res) => {
     const { email, sessionKey } = req.body;
     await doctors.findOne({ email: email }).then(data => {
-        if (data.sessionKey == sessionKey) {
+        if (data && data.sessionKey == sessionKey) {
             return res.json({ data: data, status: "authenticated" })
         } else return res.json({ status: "unauthenticated" });
     })
@@ -196,6 +208,8 @@ app.post("/doctor/login", async (req, res) => {
         } else return res.json({ status: "emailNotRegistered" });
     })
 })
+
+
 
 
 

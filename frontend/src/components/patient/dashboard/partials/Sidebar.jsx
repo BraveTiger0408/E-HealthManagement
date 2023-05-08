@@ -48,7 +48,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, data, currentPage, setPage }) {
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 ${sidebarExpanded ? "" : "lg:w-20"}  lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-slate-800 p-4 transition-all duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-64'
+        className={`flex overflow-hidden flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 ${sidebarExpanded ? "" : "lg:w-20"}  lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-slate-800 p-4 transition-all duration-200 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-64'
           }`}
       >
         {/* Sidebar header */}
@@ -69,7 +69,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, data, currentPage, setPage }) {
           {/* Logo */}
           <NavLink to="/" className='block p-1 text-m text-slate-200 hover:text-indigo-400'>
             <img src='/logo.png' className='float-left' width="32" height="32" alt=''>
-            </img><span>E-Health Management System</span>
+            </img><span className={`text-sm font-medium ml-3 ${sidebarExpanded ? "" : "lg:opacity-0"} lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200`}>E-Health Management System</span>
           </NavLink>
         </div>
 

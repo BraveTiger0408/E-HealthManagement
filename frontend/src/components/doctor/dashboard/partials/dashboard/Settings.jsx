@@ -4,21 +4,25 @@ import { useNavigate } from "react-router-dom";
 export default function Settings({ data, setPage }) {
     const navigate = useNavigate();
     function handleSave(event) {
-        const { FName, LName, mobile, gender, DOB, street, city, state, pinCode } = event.target;
+        const { FName, LName, registration, degree, fees, mobile, gender, DOB, street, city, state, pinCode } = event.target;
         const Doc = {
             "email": data.email,
             "sessionKey": data.sessionKey,
-            "name": { "FName": FName.value, "LName": LName.value },
-            "mobile": mobile.value,
+            "name": { "FName": FName.value ? FName.value : data.profile.name.FName, "LName": LName.value ? LName.value : data.profile.name.LName },
+            "registration": registration.value ? registration.value : data.profile.registration,
+            "degree": degree.value ? degree.value : data.profile.degree,
+            "fees": fees.value ? fees.value : data.profile.fees,
+            "mobile": mobile.value ? mobile.value : data.profile.mobile,
             "gender": gender.value,
-            "DOB": DOB.value,
+            "DOB": DOB.value ? DOB.value : data.profile.DOB,
             "address": {
-                "street": street.value,
-                "city": city.value,
-                "state": state.value,
-                "pin": pinCode.value
+                "street": street.value ? street.value : data.profile.address.street,
+                "city": city.value ? city.value : data.profile.address.city,
+                "state": state.value ? state.value : data.profile.address.state,
+                "pin": pinCode.value ? pinCode.value : data.profile.address.pinCode
             }
         }
+
         event.preventDefault();
         axios.post(process.env.REACT_APP_API + "/doctor/profile", Doc).then(res => {
             localStorage.setItem("currentPage", "Basic")
@@ -43,12 +47,12 @@ export default function Settings({ data, setPage }) {
                     <form className="mt-8 space-y-6" onSubmit={handleSave} method="POST">
                         <div className="border-b border-gray-900/10 pb-12">
                             <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">Fill the details carefully</p>
+                            <p className="mt-1 text-sm leading-6 text-gray-600">Only Fill those field you want to Change</p>
 
                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-3">
                                     <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                        First name
+                                        First name(without Dr)
                                     </label>
                                     <div className="mt-2">
                                         <input
@@ -109,15 +113,17 @@ export default function Settings({ data, setPage }) {
                                 </div>
 
                                 <div className="sm:col-span-2">
-                                    <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Experience in years
+                                    <label htmlFor="fees" className="block text-sm font-medium leading-6 text-gray-900">
+                                        Fees in Rupees
                                     </label>
                                     <div className="mt-2">
                                         <input
-                                            type="text"
-                                            name="experience"
-                                            id="experience"
-                                            placeholder='e.g. 5'
+                                            type="number"
+                                            min="1"
+                                            step='any'
+                                            name="fees"
+                                            id="fees"
+                                            placeholder='e.g. 500'
                                             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                         />
                                     </div>

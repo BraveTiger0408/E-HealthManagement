@@ -8,15 +8,15 @@ export default function Settings({ data, setPage }) {
         const Doc = {
             "email": data.email,
             "sessionKey": data.sessionKey,
-            "name": { "FName": FName.value, "LName": LName.value },
-            "mobile": mobile.value,
+            "name": { "FName": FName.value?FName.value:data.profile.name.FName, "LName": LName.value?LName.value:data.profile.name.LName },
+            "mobile": mobile.value?mobile.value:data.profile.mobile,
             "gender": gender.value,
-            "DOB": DOB.value,
+            "DOB": DOB.value?DOB.value:data.profile.DOB,
             "address": {
-                "street": street.value,
-                "city": city.value,
-                "state": state.value,
-                "pin": pinCode.value
+                "street": street.value?street.value:data.profile.address.street,
+                "city": city.value?city.value:data.profile.address.city,
+                "state": state.value?state.value:data.profile.address.state,
+                "pin": pinCode.value?pinCode.value:data.profile.address.pinCode
             }
         }
         event.preventDefault();

@@ -126,11 +126,14 @@ function SecondPage(props) {
   const navigate = useNavigate();
   function handleSave(event) {
     const sessionKey = generateString(20);
-    const {FName, LName, mobile, gender, DOB, street, city, state, pinCode} = event.target;
+    const { FName, LName, registration, degree, fees, mobile, gender, DOB, street, city, state, pinCode } = event.target;
     const data = {
       "email": props.email,
       "sessionKey": sessionKey,
       "name": { "FName": FName.value, "LName": LName.value },
+      "registration": registration.value,
+      "degree": degree.value,
+      "fees": fees.value,
       "mobile": mobile.value,
       "gender": gender.value,
       "DOB": DOB.value,
@@ -142,7 +145,6 @@ function SecondPage(props) {
       }
     }
 
-    console.log(data)
     event.preventDefault();
     axios.post(process.env.REACT_APP_API + "/doctor/profile", data).then(res => {
       console.log("save a Clicked")
@@ -171,13 +173,14 @@ function SecondPage(props) {
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                  First name
+                  First name(without Dr)
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
                     name="FName"
                     id="first-name"
+                    required
                     autoComplete="given-name"
                     placeholder='First Name'
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -210,6 +213,7 @@ function SecondPage(props) {
                     type="text"
                     name="registration"
                     id="reg"
+                    required
                     placeholder='Registration No'
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -225,6 +229,7 @@ function SecondPage(props) {
                     type="text"
                     name="degree"
                     id="degree"
+                    required
                     placeholder='e.g. MBBS, MD in Cardiology'
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -232,15 +237,18 @@ function SecondPage(props) {
               </div>
 
               <div className="sm:col-span-2">
-                <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">
-                  Experience in years
+                <label htmlFor="fees" className="block text-sm font-medium leading-6 text-gray-900">
+                  Fees in Rupees
                 </label>
                 <div className="mt-2">
                   <input
-                    type="text"
-                    name="experience"
-                    id="experience"
-                    placeholder='e.g. 5'
+                    type="number"
+                    min="1"
+                    step='any'
+                    name="fees"
+                    id="fees"
+                    required
+                    placeholder='e.g. 500'
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -256,6 +264,7 @@ function SecondPage(props) {
                     name="mobile"
                     type="mobile"
                     autoComplete="tel"
+                    required
                     placeholder='Mobile Number'
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />

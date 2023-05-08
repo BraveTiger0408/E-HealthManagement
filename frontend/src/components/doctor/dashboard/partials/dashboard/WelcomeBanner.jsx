@@ -61,7 +61,7 @@ function WelcomeBanner({data}) {
 
       {/* Content */}
       <div className="relative">
-        <h1 className="text-2xl md:text-3xl text-slate-800 font-bold mb-1">{greeting}, {user} 👋</h1>
+        <h1 className="text-2xl md:text-3xl text-slate-800 font-bold mb-1">{greeting}, Dr. {user} 👋</h1>
         <p>Here is your health statistics:</p>
       </div>
 
