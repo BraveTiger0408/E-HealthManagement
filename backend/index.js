@@ -57,12 +57,13 @@ const patientSchema = new mongoose.Schema({
     },
     sessionKey: String,
     profile: profileSchema,
-    healthReport: healthReportSchema
+    healthReport: healthReportSchema,
+    doctorsList: [String]
 })
 
 const patients = new mongoose.model('patient', patientSchema);
 
-app.post("/patient/register", async (req, res) => {
+app.post("/patient/register", (req, res) => {
     const { email, password } = req.body;
     patients.findOne({ email: email }).then((data) => {
         if (!data) {
@@ -75,7 +76,7 @@ app.post("/patient/register", async (req, res) => {
     }).catch(err => console.log(err));
 });
 
-app.post("/patient/profile", async (req, res) => {
+app.post("/patient/profile", (req, res) => {
     const { email, sessionKey, name, mobile, gender, DOB, address } = req.body;
     const profile = {
         name: name,
@@ -84,24 +85,24 @@ app.post("/patient/profile", async (req, res) => {
         DOB: DOB,
         address: address
     }
-    await patients.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
+    patients.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
         console.log(doc);
         return res.json(doc)
     }).catch(err => console.log(err));
 })
 
-app.post("/patient/session", async (req, res) => {
+app.post("/patient/session", (req, res) => {
     const { email, sessionKey } = req.body;
-    await patients.findOne({ email: email }).then(data => {
+    patients.findOne({ email: email }).then(data => {
         if (data && data.sessionKey == sessionKey) {
             return res.json({ data: data, status: "authenticated" })
         } else return res.json({ status: "unauthenticated" });
     })
 })
 
-app.post("/patient/login", async (req, res) => {
+app.post("/patient/login", (req, res) => {
     const { email, password } = req.body;
-    await patients.findOne({ email: email }).then(data => {
+    patients.findOne({ email: email }).then(data => {
         if (data) {
             if (data.password == password) {
                 return res.json({ data: data, status: "authenticated" })
@@ -110,10 +111,10 @@ app.post("/patient/login", async (req, res) => {
     })
 })
 
-app.get("/patient/doctors", async (req, res) => {
-    await doctors.find({}, {"password":0, "sessionKey":0}).then(data => {
-        if(data)
-        return res.json(data);
+app.get("/patient/doctors", (req, res) => {
+    doctors.find({}, { "password": 0, "sessionKey": 0 }).then(data => {
+        if (data)
+            return res.json(data);
     })
 })
 
@@ -155,11 +156,12 @@ const doctorSchema = new mongoose.Schema({
     },
     sessionKey: String,
     profile: doctorProfileSchema,
+    patientsList: [String]
 })
 
 const doctors = new mongoose.model('doctor', doctorSchema);
 
-app.post("/doctor/register", async (req, res) => {
+app.post("/doctor/register", (req, res) => {
     const { email, password } = req.body;
     doctors.findOne({ email: email }).then((data) => {
         if (!data) {
@@ -172,7 +174,7 @@ app.post("/doctor/register", async (req, res) => {
     }).catch(err => console.log(err));
 });
 
-app.post("/doctor/profile", async (req, res) => {
+app.post("/doctor/profile", (req, res) => {
     const { email, sessionKey, name, registration, degree, fees, mobile, gender, DOB, address } = req.body;
     const profile = {
         name: name,
@@ -184,23 +186,23 @@ app.post("/doctor/profile", async (req, res) => {
         DOB: DOB,
         address: address
     }
-    await doctors.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
+    doctors.findOneAndUpdate({ email: email }, { sessionKey: sessionKey, profile: profile }, { new: true }).then(doc => {
         return res.json(doc)
     }).catch(err => console.log(err));
 })
 
-app.post("/doctor/session", async (req, res) => {
+app.post("/doctor/session", (req, res) => {
     const { email, sessionKey } = req.body;
-    await doctors.findOne({ email: email }).then(data => {
+    doctors.findOne({ email: email }).then(data => {
         if (data && data.sessionKey == sessionKey) {
             return res.json({ data: data, status: "authenticated" })
         } else return res.json({ status: "unauthenticated" });
     })
 })
 
-app.post("/doctor/login", async (req, res) => {
+app.post("/doctor/login", (req, res) => {
     const { email, password } = req.body;
-    await doctors.findOne({ email: email }).then(data => {
+    doctors.findOne({ email: email }).then(data => {
         if (data) {
             if (data.password == password) {
                 return res.json({ data: data, status: "authenticated" })
@@ -210,7 +212,60 @@ app.post("/doctor/login", async (req, res) => {
 })
 
 
+// Razorpay API
 
+const Razorpay = require("razorpay");
+const crypto = require("crypto");
+
+app.post("/payments/orders", async (req, res) => {
+    try {
+        const instance = new Razorpay({
+            key_id: process.env.KEY_ID,
+            key_secret: process.env.KEY_SECRET,
+        });
+        const options = {
+            amount: req.body.amount * 100,
+            currency: "INR",
+            receipt: crypto.randomBytes(10).toString("hex"),
+        };
+        instance.orders.create(options, (error, order) => {
+            console.log(order);
+            if (error) {
+                console.log(error);
+                return res.status(500).json({ message: "Something Went Wrong!" });
+            }
+            res.status(200).json({ data: order });
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error!" });
+        console.log(error);
+    }
+})
+
+app.post("/payments/verify", async (req, res) => {
+    try {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+            req.body;
+        const sign = razorpay_order_id + "|" + razorpay_payment_id;
+        const expectedSign = crypto
+            .createHmac("sha256", process.env.KEY_SECRET)
+            .update(sign.toString())
+            .digest("hex");
+
+        if (razorpay_signature === expectedSign) {
+            const { registration, patientEmail } = req.body;
+            patients.updateOne({ email: patientEmail }, { $push: { doctorsList: registration } }).then(data => console.log("Patient: " + data));
+            doctors.updateOne({ 'profile.registration': registration }, { $push: { patientsList: patientEmail } }).then(data => console.log("Doctor: " + data));
+
+            return res.status(200).json({ message: "Payment verified successfully" });
+        } else {
+            return res.status(400).json({ message: "Invalid signature sent!" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: "Internal Server Error!" });
+        console.log(error);
+    }
+})
 
 
 const port = process.env.PORT || "5000";
