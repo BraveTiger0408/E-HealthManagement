@@ -10,8 +10,8 @@ import { useLocation } from "react-router-dom"
 
 function Dashboard() {
   const { state } = useLocation();
-  sessionStorage.setItem("email", state.email);
-  sessionStorage.setItem("sessionKey", state.sessionKey);
+  localStorage.setItem("email", state.email);
+  localStorage.setItem("sessionKey", state.sessionKey);
 
   const [currentPage, setCurrentPage] = useState("Basic");
 

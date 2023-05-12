@@ -254,8 +254,8 @@ app.post("/payments/verify", async (req, res) => {
 
         if (razorpay_signature === expectedSign) {
             const { registration, patientEmail } = req.body;
-            patients.updateOne({ email: patientEmail }, { $push: { doctorsList: registration } }).then(data => console.log("Patient: " + data));
-            doctors.updateOne({ 'profile.registration': registration }, { $push: { patientsList: patientEmail } }).then(data => console.log("Doctor: " + data));
+            patients.updateOne({ email: patientEmail }, { $push: { doctorsList: registration } }).then(data => console.log(data));
+            doctors.updateOne({ 'profile.registration': registration }, { $push: { patientsList: patientEmail } }).then(data => console.log(data));
 
             return res.status(200).json({ message: "Payment verified successfully" });
         } else {

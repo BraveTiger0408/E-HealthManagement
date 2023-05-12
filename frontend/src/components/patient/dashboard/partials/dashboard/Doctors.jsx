@@ -8,11 +8,11 @@ function Doctors() {
 
   const initPayment = (data) => {
 		const options = {
-			key: process.env.REACT_APP_KEY_SECRET,
+			key: process.env.REACT_APP_KEY_ID,
 			amount: data.amount,
 			currency: data.currency,
 			name: "Dr. " + data.myData.name,
-			description: "Appointment Booking",
+			description: "Appointment of " + data.myData.registration + " Booking by" + data.myData.patientEmail,
 			image: logo,
 			order_id: data.id,
 			handler: async (response) => {
@@ -41,7 +41,7 @@ function Doctors() {
       const myData = {
         name: event.target.name.value,
         registration: event.target.registration.value,
-        patientEmail: sessionStorage.getItem("email")
+        patientEmail: localStorage.getItem("email")
       }
 			console.log(Object.assign(data.data, {myData: myData}));
 			initPayment(Object.assign(data.data, {myData: myData}));

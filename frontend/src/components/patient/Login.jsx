@@ -7,8 +7,8 @@ import { useState } from 'react';
 export default function Login() {
   localStorage.removeItem("currentPage");
   const navigate = useNavigate();
-  if (sessionStorage.getItem("sessionKey")) {
-    axios.post(process.env.REACT_APP_API + "/patient/session", { "email": sessionStorage.getItem("email"), "sessionKey": sessionStorage.getItem("sessionKey") }).then(res => {
+  if (localStorage.getItem("sessionKey")) {
+    axios.post(process.env.REACT_APP_API + "/patient/session", { "email": localStorage.getItem("email"), "sessionKey": localStorage.getItem("sessionKey") }).then(res => {
       if (res.data.status === "authenticated") {
         navigate("/patient/dashboard", { state: res.data.data });
         localStorage.setItem("currentPage", "Basic");
