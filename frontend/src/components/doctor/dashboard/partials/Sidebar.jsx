@@ -119,7 +119,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, data, currentPage, setPage }) {
                               />
                             </svg>
                             <span className={`text-sm font-medium ml-3 ${sidebarExpanded ? "" : "lg:opacity-0"} lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200`}>
-                              Health Reports
+                              Patients
                             </span>
                           </div>
                           {/* Icon */}
@@ -144,7 +144,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, data, currentPage, setPage }) {
                               }
                             >
                               <span className={`${sidebarExpanded ? "" : "lg:opacity-0"}text-sm font-medium lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200`}>
-                                Basic
+                                Today
                               </span>
                             </NavLink>
                           </li>
@@ -192,7 +192,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen, data, currentPage, setPage }) {
                         d="M12 6a3 3 0 110-6 3 3 0 010 6zm2 18h-4a1 1 0 01-1-1v-6H6v-6a3 3 0 013-3h6a3 3 0 013 3v6h-3v6a1 1 0 01-1 1z"
                       />
                     </svg>
-                    <span className={`${sidebarExpanded ? "" : "lg:opacity-0"}text-sm font-medium ml-3 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${currentPage === "Doctors" ? 'text-indigo-500' : 'text-slate-200 hover:text-indigo-400'}`}>Doctors</span>
+                    <span className={`${sidebarExpanded ? "" : "lg:opacity-0"}text-sm font-medium ml-3 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 ${currentPage === "Doctors" ? 'text-indigo-500' : 'text-slate-200 hover:text-indigo-400'}`}>Medical</span>
                   </div>
                 </NavLink>
               </li>

@@ -58,7 +58,7 @@ const patientSchema = new mongoose.Schema({
     sessionKey: String,
     profile: profileSchema,
     healthReport: healthReportSchema,
-    doctorsList: [String]
+    doctorsList: [{reg: String, date: Date}]
 })
 
 const patients = new mongoose.model('patient', patientSchema);
@@ -93,7 +93,7 @@ app.post("/patient/profile", (req, res) => {
 
 app.post("/patient/session", (req, res) => {
     const { email, sessionKey } = req.body;
-    patients.findOne({ email: email }).then(data => {
+    patients.findOne({ email: email }, { "password": 0}).then(data => {
         if (data && data.sessionKey == sessionKey) {
             return res.json({ data: data, status: "authenticated" })
         } else return res.json({ status: "unauthenticated" });
@@ -156,7 +156,7 @@ const doctorSchema = new mongoose.Schema({
     },
     sessionKey: String,
     profile: doctorProfileSchema,
-    patientsList: [String]
+    patientsList: [{email: String, date: Date}]
 })
 
 const doctors = new mongoose.model('doctor', doctorSchema);
@@ -253,9 +253,9 @@ app.post("/payments/verify", async (req, res) => {
             .digest("hex");
 
         if (razorpay_signature === expectedSign) {
-            const { registration, patientEmail } = req.body;
-            patients.updateOne({ email: patientEmail }, { $push: { doctorsList: registration } }).then(data => console.log(data));
-            doctors.updateOne({ 'profile.registration': registration }, { $push: { patientsList: patientEmail } }).then(data => console.log(data));
+            const { registration, patientEmail, date } = req.body;
+            patients.updateOne({ email: patientEmail }, { $push: { doctorsList: {reg: registration, date: date} } }).then(data => console.log(data));
+            doctors.updateOne({ 'profile.registration': registration }, { $push: { patientsList: {email: patientEmail, date: date} } }).then(data => console.log(data));
 
             return res.status(200).json({ message: "Payment verified successfully" });
         } else {

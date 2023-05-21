@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from './partials/Sidebar';
 import Header from './partials/Header';
 import WelcomeBanner from './partials/dashboard/WelcomeBanner';
-import BasicHealthReport from './partials/dashboard/BasicHealthReport';
+// import BasicHealthReport from './partials/dashboard/BasicHealthReport';
 import Doctors from './partials/dashboard/Doctors';
 import Settings from './partials/dashboard/Settings';
 import { useLocation } from "react-router-dom"
@@ -30,7 +30,7 @@ function Dashboard() {
   function CurrentDashboard() {
     console.log("Current Dashboard");
     if (currentPage === "Basic") {
-      return <BasicHealthReport />;
+      return <Doctors />;
     } else if (currentPage === "Settings") {
       return <Settings data={state} setPage={setPage} />
     } else if (currentPage === "Doctors") {
