@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom'
 import axios from 'axios';
 import logo from './logo.png'
+import { generateString } from '../../../../Functions'
 
 function Doctors() {
 
@@ -19,6 +21,20 @@ function Doctors() {
           const verifyUrl = process.env.REACT_APP_API + "/payments/verify";
           const verifiedResponse = await axios.post(verifyUrl, Object.assign(response, data.myData));
           console.log(verifiedResponse.data);
+          if (verifiedResponse.status === 200) {
+            const ChatEngineUser = await axios.post('https://api.chatengine.io/users/', {
+              "username": data.myData.patientEmail,
+              "secret": generateString(10),
+              "email": data.myData.patientEmail,
+              // "first_name": "Bob",
+              // "last_name": "Baker",
+            }, {
+              headers: {
+                'PRIVATE-KEY': '1fc8cfb3-8c91-49e7-8e5b-032e0d88e55b'
+              }
+            });
+            console.log(ChatEngineUser)
+          }
           window.location.reload(false);
         } catch (error) {
           console.log(error);
@@ -146,7 +162,11 @@ function Doctors() {
                             disabled
                             className="block opacity-0 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                           />
-                          <button class="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-red-500 rounded-xl group">
+                          <button onClick={(e) => {
+                            localStorage.setItem("currentPage", "Messages");
+                            window.location.reload(false);
+                            e.preventDefault();
+                          }} class="relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-red-500 rounded-xl group">
                             <span class="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-red-700 rounded group-hover:-mr-4 group-hover:-mt-4">
                               <span class="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
                             </span>

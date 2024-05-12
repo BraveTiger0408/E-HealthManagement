@@ -6,6 +6,7 @@ import WelcomeBanner from './partials/dashboard/WelcomeBanner';
 // import BasicHealthReport from './partials/dashboard/BasicHealthReport';
 import Doctors from './partials/dashboard/Doctors';
 import Settings from './partials/dashboard/Settings';
+import Messages from './partials/dashboard/Messages';
 import { useLocation } from "react-router-dom"
 
 function Dashboard() {
@@ -35,6 +36,8 @@ function Dashboard() {
       return <Settings data={state} setPage={setPage} />
     } else if (currentPage === "Doctors") {
       return <Doctors />
+    } else if (currentPage === "Messages") {
+      return <Messages />
     }
   }
 
